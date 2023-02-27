@@ -1,4 +1,4 @@
-const pokemon = [
+/* const pokemon = [
   {
     id: 1,
     name: "bulbasaur",
@@ -30,9 +30,23 @@ const pokemon = [
     likes: 11,
   },
 ];
-
+ */
 const pokeContainer = document.querySelector("#poke-container");
 const pokeForm = document.querySelector("#poke-form");
+
+function getPokemon(){
+  fetch("http://localhost:3000/characters")
+    .then((response)=>{
+      return response.json()
+    })
+    .then((characters)=> {
+      characters.forEach((character) => {
+        renderPokemon(character);
+      })
+    })
+}
+
+getPokemon()
 
 pokeForm.addEventListener("submit", function (e) {
   e.preventDefault();
@@ -50,9 +64,9 @@ pokeForm.addEventListener("submit", function (e) {
   pokeForm.reset();
 });
 
-pokemon.forEach(function (character) {
+/* pokemon.forEach(function (character) {
   renderPokemon(character);
-});
+}); */
 
 function renderPokemon(char) {
   const pokeCard = document.createElement("div");
@@ -97,5 +111,14 @@ function renderPokemon(char) {
 }
 
 function showCharacter(character) {
-  // Write code here
+  fetch(`http://localhost:3000/characters/${character.id}`)
+    .then((response)=>{
+      return response.json()
+    })
+    .then((character)=>{
+      const pokemonCard = renderPokemon(character)
+      pokemonCard.id = "poke-show-card"
+      pokeContainer.replaceChild(pokemonCard)
+    })
 }
+
