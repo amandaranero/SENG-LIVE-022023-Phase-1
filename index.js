@@ -24,7 +24,18 @@ const createPokemon = (e) => {
     likes: 0,
   };
 
+  const configObj = {
+    method: 'POST',
+    headers:{
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(newChar)
+  };
   // Make a POST request to persist the new character
+
+  fetch("http://localhost:3000/characters", configObj)
+
+ 
 
   renderPokemon(newChar);
   pokeForm.reset();
@@ -65,8 +76,28 @@ const commentsForm = () => {
 
   form.append(commentInput, submit);
 
+  form.addEventListener("sumbit", (e) => {
+    e.preventDefault()
+    const configObjTwo = {
+      method: 'POST',
+      headers:{
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        content: commentInput.value,
+      })
+    };
+  
+    fetch("http://localhost:3000/comments", configObjTwo)
+  
+  });
+  
+
   return form;
 };
+
+
+
 
 function loadComments(pokeCard, char) {
   const commentsDiv = document.createElement("div");
@@ -82,6 +113,8 @@ function loadComments(pokeCard, char) {
     return renderComment(commentsDiv, comment);
   });
 }
+
+
 
 const showCharacter = (character) => {
   fetch(`http://localhost:3000/characters/${character.id}`)
